@@ -1,0 +1,270 @@
+@import "tailwindcss";
+
+/* Synapse Theme Configuration */
+@theme {
+  /* Primary Colors */
+  --color-synapse-primary: #0066cc;
+  --color-synapse-secondary: #00a3a3;
+  
+  /* Status Colors */
+  --color-synapse-success: #28a745;
+  --color-synapse-warning: #ffc107;
+  --color-synapse-danger: #dc3545;
+  
+  /* Neutral Colors */
+  --color-synapse-dark: #1a1a2e;
+  --color-synapse-light: #f4f6f9;
+  --color-synapse-card: #ffffff;
+  --color-synapse-border: #e0e6ed;
+  
+  /* Traffic Light System */
+  --color-traffic-green: #28a745;
+  --color-traffic-amber: #ffc107;
+  --color-traffic-red: #dc3545;
+}
+
+/* Base styles */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-synapse-light);
+  color: #1a1a2e;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-synapse-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c9d2;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8b2bd;
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-synapse-primary);
+  outline-offset: 2px;
+}
+
+/* Card styles */
+.card {
+  background-color: var(--color-synapse-card);
+  border: 1px solid var(--color-synapse-border);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Traffic light indicators */
+.traffic-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+}
+
+.traffic-light--green {
+  background-color: var(--color-traffic-green);
+}
+
+.traffic-light--amber {
+  background-color: var(--color-traffic-amber);
+}
+
+.traffic-light--red {
+  background-color: var(--color-traffic-red);
+}
+
+/* Status badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+}
+
+.badge--success {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: var(--color-synapse-success);
+}
+
+.badge--warning {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #b45309;
+}
+
+.badge--danger {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: var(--color-synapse-danger);
+}
+
+.badge--info {
+  background-color: rgba(0, 102, 204, 0.1);
+  color: var(--color-synapse-primary);
+}
+
+/* Button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background-color: var(--color-synapse-primary);
+  color: white;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-color: #0052a3;
+}
+
+.btn--secondary {
+  background-color: white;
+  color: #1a1a2e;
+  border: 1px solid var(--color-synapse-border);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background-color: var(--color-synapse-light);
+}
+
+.btn--danger {
+  background-color: var(--color-synapse-danger);
+  color: white;
+}
+
+.btn--danger:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+/* Table styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  background-color: var(--color-synapse-light);
+  border-bottom: 1px solid var(--color-synapse-border);
+}
+
+.table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-synapse-border);
+}
+
+.table tr:hover {
+  background-color: rgba(0, 102, 204, 0.02);
+}
+
+/* Loading spinner */
+.spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--color-synapse-border);
+  border-top-color: var(--color-synapse-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-synapse-light) 25%,
+    #e8ecf1 50%,
+    var(--color-synapse-light) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.25rem;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Toast slide-in animation */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}
