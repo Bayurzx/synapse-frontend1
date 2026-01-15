@@ -249,7 +249,7 @@ function PitchDeckSection({ mounted }: { mounted: boolean }) {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
   return (
-    <section className={`relative z-10 px-6 py-16 transition-all duration-1000 delay-400 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+    <section id="investor-pitch" className={`relative z-10 px-6 py-16 transition-all duration-1000 delay-400 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 bg-synapse-primary/10 text-synapse-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
@@ -617,6 +617,17 @@ export default function HomePage() {
   
   useEffect(() => {
     setMounted(true);
+    
+    // Handle hash scroll after mount
+    if (window.location.hash) {
+      setTimeout(() => {
+        const id = window.location.hash.substring(1);
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
   }, []);
 
   return (
