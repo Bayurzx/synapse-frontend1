@@ -525,8 +525,8 @@ export const synapseApi = {
       if (filters?.borrowerId) {
         params.append('borrower_id', filters.borrowerId);
       } else {
-        // Fetch all covenants when no filter (for dashboard/monitoring overview)
-        params.append('page_size', '500');
+        // Fetch covenants for dashboard/monitoring overview (API max is 100)
+        params.append('page_size', '100');
       }
       const query = params.toString() ? `?${params.toString()}` : '';
       const response = await apiCall<PaginatedResponse<Covenant>>(`/v1/synapse/covenants${query}`);
