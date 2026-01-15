@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { synapseApi } from '@/services/api';
 import { wsClient } from '@/services/websocket';
-import { RefreshCw, Download, Activity } from 'lucide-react';
+import { RefreshCw, Download, Activity, X, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 import {
   CovenantStatusGrid,
   PortfolioComplianceChart,
@@ -33,10 +34,15 @@ function MonitoringSkeleton() {
   );
 }
 
-export default function MonitoringPage() {
+function MonitoringContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Get borrower filter from URL params
+  const borrowerIdFilter = searchParams.get('borrowerId');
+  const borrowerNameFilter = searchParams.get('borrowerName');
 
   // Fetch covenant dashboard data (summary stats)
   const { data: dashboard, isLoading: dashboardLoading, error, refetch } = useQuery({
@@ -64,21 +70,33 @@ export default function MonitoringPage() {
     },
   });
 
-  const covenants = covenantsList || [];
+  // Filter covenants by borrower if filter is set
+  const allCovenants = covenantsList || [];
+  const covenants = borrowerNameFilter 
+    ? allCovenants.filter(c => c.borrower_name === borrowerNameFilter)
+    : allCovenants;
+  
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dashboardData = (dashboard?.data || dashboard || {}) as any;
 
-  // Use summary stats from dashboard API
-  const totalCovenants = dashboardData.total_covenants || covenants.length;
-  const compliantCount = dashboardData.compliant || covenants.filter(c => (c.compliance_status || c.status) === 'compliant').length;
-  const warningCount = dashboardData.warning || covenants.filter(c => (c.compliance_status || c.status) === 'warning').length;
-  const breachCount = (dashboardData.breach || 0) + (dashboardData.critical || 0) || covenants.filter(c => {
-    const status = c.compliance_status || c.status;
-    return status === 'breach' || status === 'critical';
-  }).length;
-  const complianceRate = dashboardData.compliance_rate 
-    ? Math.round(dashboardData.compliance_rate) 
-    : (totalCovenants > 0 ? Math.round((compliantCount / totalCovenants) * 100) : 0);
+  // Calculate stats based on filtered covenants
+  const totalCovenants = borrowerIdFilter ? covenants.length : (dashboardData.total_covenants || covenants.length);
+  const compliantCount = borrowerIdFilter 
+    ? covenants.filter(c => (c.compliance_status || c.status)?.toLowerCase() === 'compliant').length
+    : (dashboardData.compliant || covenants.filter(c => (c.compliance_status || c.status) === 'compliant').length);
+  const warningCount = borrowerIdFilter
+    ? covenants.filter(c => (c.compliance_status || c.status)?.toLowerCase() === 'warning').length
+    : (dashboardData.warning || covenants.filter(c => (c.compliance_status || c.status) === 'warning').length);
+  const breachCount = borrowerIdFilter
+    ? covenants.filter(c => {
+        const status = (c.compliance_status || c.status)?.toLowerCase();
+        return status === 'breach' || status === 'critical';
+      }).length
+    : ((dashboardData.breach || 0) + (dashboardData.critical || 0) || covenants.filter(c => {
+        const status = c.compliance_status || c.status;
+        return status === 'breach' || status === 'critical';
+      }).length);
+  const complianceRate = totalCovenants > 0 ? Math.round((compliantCount / totalCovenants) * 100) : 0;
 
   const isLoading = dashboardLoading || covenantsLoading;
 
@@ -131,12 +149,42 @@ export default function MonitoringPage() {
 
   return (
     <div>
+      {/* Borrower Filter Banner */}
+      {borrowerIdFilter && (
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/borrowers/${borrowerIdFilter}`}
+              className="text-blue-600 hover:text-blue-700 flex items-center gap-1"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Borrower
+            </Link>
+            <span className="text-gray-400">|</span>
+            <span className="text-blue-800">
+              Showing covenants for: <strong>{borrowerNameFilter || `Borrower #${borrowerIdFilter}`}</strong>
+            </span>
+          </div>
+          <Link
+            href="/monitoring"
+            className="text-blue-600 hover:text-blue-700 flex items-center gap-1 text-sm"
+          >
+            <X className="h-4 w-4" />
+            Clear Filter
+          </Link>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Covenant Monitoring</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">
+            {borrowerIdFilter ? `Covenant Monitoring - ${borrowerNameFilter || 'Borrower'}` : 'Covenant Monitoring'}
+          </h1>
           <p className="text-sm text-gray-500 mt-1">
-            Real-time covenant compliance tracking and alerts
+            {borrowerIdFilter 
+              ? `${totalCovenants} covenants tracked for this borrower`
+              : 'Real-time covenant compliance tracking and alerts'}
           </p>
         </div>
         <div className="flex gap-2">
@@ -279,7 +327,7 @@ export default function MonitoringPage() {
                 <div className="flex items-center justify-between py-2">
                   <span className="text-gray-600">Borrowers Monitored</span>
                   <span className="font-semibold text-gray-900">
-                    {new Set(covenants.map(c => c.borrower_name)).size}
+                    {borrowerIdFilter ? 1 : new Set(covenants.map(c => c.borrower_name)).size}
                   </span>
                 </div>
               </div>
@@ -288,5 +336,14 @@ export default function MonitoringPage() {
         </div>
       )}
     </div>
+  );
+}
+
+// Wrap with Suspense for useSearchParams
+export default function MonitoringPage() {
+  return (
+    <Suspense fallback={<MonitoringSkeleton />}>
+      <MonitoringContent />
+    </Suspense>
   );
 }

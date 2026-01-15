@@ -66,6 +66,253 @@ function StatCounter({ value, label, suffix = '' }: { value: number; label: stri
   );
 }
 
+// Pitch Deck Slide Component
+type SlideVariant = 'blue' | 'orange' | 'red' | 'teal';
+
+function PitchSlide({ 
+  variant, 
+  icon, 
+  label, 
+  title, 
+  description, 
+  statValue, 
+  statLabel,
+  quote
+}: { 
+  variant: SlideVariant;
+  icon: React.ReactNode;
+  label: string;
+  title: string;
+  description: string;
+  statValue: string;
+  statLabel: string;
+  quote?: string;
+}) {
+  const gradients: Record<SlideVariant, string> = {
+    blue: 'from-blue-500 to-blue-600',
+    orange: 'from-orange-500 to-orange-600',
+    red: 'from-red-500 to-red-600',
+    teal: 'from-teal-500 to-teal-600'
+  };
+  
+  const iconBgs: Record<SlideVariant, string> = {
+    blue: 'bg-blue-400/30',
+    orange: 'bg-orange-400/30',
+    red: 'bg-red-400/30',
+    teal: 'bg-teal-400/30'
+  };
+  
+  const statColors: Record<SlideVariant, string> = {
+    blue: 'text-blue-600',
+    orange: 'text-orange-600',
+    red: 'text-red-600',
+    teal: 'text-teal-600'
+  };
+
+  return (
+    <div className="rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-300">
+      {/* Top colored section */}
+      <div className={`bg-gradient-to-br ${gradients[variant]} p-10 text-white`}>
+        <div className="flex items-start gap-6">
+          <div className={`w-20 h-20 ${iconBgs[variant]} rounded-2xl flex items-center justify-center flex-shrink-0`}>
+            <div className="scale-150">{icon}</div>
+          </div>
+          <div>
+            <p className="text-white/80 text-base font-medium uppercase tracking-wide mb-2">{label}</p>
+            <h3 className="text-3xl font-bold mb-3">{title}</h3>
+            <p className="text-white/90 text-lg leading-relaxed">{description}</p>
+          </div>
+        </div>
+      </div>
+      
+      {/* Bottom white section */}
+      <div className="bg-white p-10">
+        <div className="text-center">
+          <div className={`text-6xl font-bold ${statColors[variant]} mb-2`}>{statValue}</div>
+          <div className="text-gray-500 text-lg">{statLabel}</div>
+        </div>
+        {quote && (
+          <div className="mt-6 pt-6 border-t border-gray-100">
+            <p className="text-gray-600 text-lg italic border-l-4 border-red-200 pl-4 bg-red-50/50 py-3 rounded-r">
+              {quote}
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Pitch Deck Section with navigation
+function PitchDeckSection({ mounted }: { mounted: boolean }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  const slides = [
+    // Credit AI Story Slides (Questions)
+    {
+      variant: 'blue' as SlideVariant,
+      icon: (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      label: 'The Question',
+      title: '"Who has a risky debt ratio?"',
+      description: 'What if your C-suite could ask your database questions in plain English and get instant answers—like speaking with a senior credit analyst?',
+      statValue: '1,000',
+      statLabel: 'Customer Profiles Queryable'
+    },
+    {
+      variant: 'teal' as SlideVariant,
+      icon: (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      ),
+      label: 'Credit AI Answer',
+      title: 'Instant Risk Intelligence',
+      description: 'Credit AI turns complex portfolio data into executive insights. Ask about borrower health, payment patterns, or exposure risk—get board-ready answers in seconds.',
+      statValue: '<500ms',
+      statLabel: 'Query Response Time'
+    },
+    // Problem Slides (Synapse)
+    {
+      variant: 'orange' as SlideVariant,
+      icon: (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      label: 'Wasted Productivity',
+      title: '60% Time on Manual Tasks',
+      description: 'LMAs spend most of their time on spreadsheet tracking instead of strategic work',
+      statValue: '60%',
+      statLabel: 'Time Wasted on Admin'
+    },
+    {
+      variant: 'orange' as SlideVariant,
+      icon: (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      ),
+      label: 'Slow Response Times',
+      title: '3-5 Days to Draft Amendments',
+      description: 'Critical amendments take days to prepare—when every hour counts',
+      statValue: '3-5 Days',
+      statLabel: 'Amendment Turnaround'
+    },
+    {
+      variant: 'red' as SlideVariant,
+      icon: (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      label: 'The Hidden Burden',
+      title: '$2M Annual LMA Costs',
+      description: 'Mid-sized banks spend millions on Loan Management Agents tracking covenants manually',
+      statValue: '$2,000,000',
+      statLabel: 'Annual Operating Cost'
+    },
+    {
+      variant: 'red' as SlideVariant,
+      icon: (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+        </svg>
+      ),
+      label: 'The Real Cost',
+      title: 'Unknown Losses from Late Detection',
+      description: 'By the time covenant breaches are discovered, significant losses may have already occurred',
+      statValue: 'Unknown',
+      statLabel: 'Preventable Losses',
+      quote: "This isn't just inefficient—it's expensive and risky."
+    },
+    // Solution Slide
+    {
+      variant: 'teal' as SlideVariant,
+      icon: (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      ),
+      label: 'The Solution',
+      title: 'Synapse: Proactive Loan Management',
+      description: 'Built on Credit AI, Synapse monitors 388 covenants across $237M in real-time—catching 59 warnings and 58 breaches before they become losses',
+      statValue: '$1.6M',
+      statLabel: 'Annual Savings Potential'
+    }
+  ];
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+
+  return (
+    <section className={`relative z-10 px-6 py-16 transition-all duration-1000 delay-400 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-2 bg-synapse-primary/10 text-synapse-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+            </svg>
+            Investor Pitch
+          </div>
+          <h2 className="text-3xl font-bold text-synapse-dark mb-4">The Story Behind Synapse</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            From conversational credit intelligence to proactive loan management
+          </p>
+        </div>
+
+        {/* Slide Navigation */}
+        <div className="flex items-center justify-center gap-4 mb-8">
+          <button 
+            onClick={prevSlide}
+            className="p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-shadow border border-gray-200"
+          >
+            <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <div className="flex gap-2">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  idx === currentSlide 
+                    ? 'bg-synapse-primary w-8' 
+                    : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+              />
+            ))}
+          </div>
+          
+          <button 
+            onClick={nextSlide}
+            className="p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-shadow border border-gray-200"
+          >
+            <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Current Slide */}
+        <div className="max-w-2xl mx-auto">
+          <PitchSlide {...slides[currentSlide]} />
+        </div>
+
+        {/* Slide Counter */}
+        <div className="text-center mt-6 text-sm text-gray-500">
+          {currentSlide + 1} / {slides.length}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
   
@@ -169,6 +416,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Pitch Deck Section */}
+      <PitchDeckSection mounted={mounted} />
 
       {/* Features Section */}
       <section className={`relative z-10 px-6 py-16 transition-all duration-1000 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>

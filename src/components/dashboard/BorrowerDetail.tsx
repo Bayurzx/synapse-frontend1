@@ -16,6 +16,7 @@ import {
   Activity,
   FileEdit,
   Download,
+  Shield,
 } from 'lucide-react';
 import { synapseApi, RiskProfile, Facility, Amendment } from '@/services/api';
 import RiskScoreCard, { TrafficLight } from './RiskScoreCard';
@@ -240,8 +241,15 @@ export default function BorrowerDetail({ borrowerId }: BorrowerDetailProps) {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions</h2>
             <div className="space-y-2">
               <Link
-                href={`/documents/generate?borrower=${borrowerId}`}
+                href={`/monitoring?borrowerId=${borrowerId}&borrowerName=${encodeURIComponent(borrower.name)}`}
                 className="btn btn--primary w-full flex items-center justify-center gap-2"
+              >
+                <Shield className="h-4 w-4" />
+                View Covenants
+              </Link>
+              <Link
+                href={`/documents/generate?borrower=${borrowerId}`}
+                className="btn btn--secondary w-full flex items-center justify-center gap-2"
               >
                 <FileText className="h-4 w-4" />
                 Generate Document
