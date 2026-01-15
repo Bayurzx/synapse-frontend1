@@ -313,6 +313,305 @@ function PitchDeckSection({ mounted }: { mounted: boolean }) {
   );
 }
 
+// Credit AI Analytics Showcase Section
+function CreditAIShowcaseSection({ mounted }: { mounted: boolean }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  const slides = [
+    {
+      title: 'Choose Your Path',
+      description: 'Two powerful ways to interact with your credit data',
+      content: (
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-indigo-200 transition-colors">
+            <div className="w-16 h-16 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
+              <svg className="w-8 h-8 text-indigo-600" fill="currentColor" viewBox="0 0 24 24">
+                <rect x="6" y="6" width="12" height="12" rx="2" />
+              </svg>
+            </div>
+            <h4 className="text-xl font-bold text-gray-900 mb-2">Analytics Dashboard</h4>
+            <p className="text-gray-600 mb-4">Explore conversational analytics with natural language queries. Ask questions about credit data and get instant insights.</p>
+            <div className="inline-flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+              Try Analytics
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl p-8 border-2 border-indigo-200 hover:border-indigo-300 transition-colors">
+            <div className="w-16 h-16 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
+              <svg className="w-8 h-8 text-indigo-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C10.34 2 9 3.34 9 5C9 6.66 10.34 8 12 8C13.66 8 15 6.66 15 5C15 3.34 13.66 2 12 2ZM12 10C9.33 10 4 11.34 4 14V16H20V14C20 11.34 14.67 10 12 10Z"/>
+              </svg>
+            </div>
+            <h4 className="text-xl font-bold text-gray-900 mb-2">API Playground</h4>
+            <p className="text-gray-600 mb-4">Test the Credit AI API endpoints directly. Make credit decisions, extract features, and explore the full API capabilities.</p>
+            <div className="inline-flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+              API Playground
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Key Features',
+      description: 'Enterprise-grade credit intelligence powered by TimescaleDB',
+      content: (
+        <div className="bg-gray-50 rounded-2xl p-8">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="flex items-start gap-4">
+              <span className="text-2xl">⚡</span>
+              <div>
+                <h4 className="font-bold text-gray-900">Smart Feature Extraction</h4>
+                <p className="text-gray-600 text-sm">20+ financial metrics calculated in real-time using TimescaleDB continuous aggregates</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <span className="text-2xl">🎯</span>
+              <div>
+                <h4 className="font-bold text-gray-900">Dynamic Rule Engine</h4>
+                <p className="text-gray-600 text-sm">Adaptive credit rules that adjust based on customer type (salaried, freelancer, business)</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <span className="text-2xl">🧠</span>
+              <div>
+                <h4 className="font-bold text-gray-900">ML Risk Scoring</h4>
+                <p className="text-gray-600 text-sm">LightGBM model with SHAP explanations for transparent risk assessment</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <span className="text-2xl">💬</span>
+              <div>
+                <h4 className="font-bold text-gray-900">Conversational Analytics</h4>
+                <p className="text-gray-600 text-sm">Natural language queries powered by Tiger MCP and template matching</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <span className="text-2xl">📈</span>
+              <div>
+                <h4 className="font-bold text-gray-900">Time-Series Intelligence</h4>
+                <p className="text-gray-600 text-sm">Behavioral pattern analysis over time, not just point-in-time snapshots</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <span className="text-2xl">🔍</span>
+              <div>
+                <h4 className="font-bold text-gray-900">Full Explainability</h4>
+                <p className="text-gray-600 text-sm">Every decision comes with detailed reasons and confidence scores</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Ask in Plain English',
+      description: 'Query your credit data like you\'re talking to a senior analyst',
+      content: (
+        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+          <div className="bg-amber-50 p-4 border-b border-amber-100">
+            <p className="text-amber-800 text-sm font-medium">API Configuration</p>
+            <code className="text-xs text-amber-700 bg-amber-100 px-2 py-1 rounded mt-1 inline-block">
+              https://docker-credit-ai-api-dev.europe-west4.run.app
+            </code>
+          </div>
+          <div className="p-6">
+            <div className="flex gap-3 mb-6">
+              <input 
+                type="text" 
+                value="Show me approved loans with high risk scores"
+                readOnly
+                className="flex-1 px-4 py-3 border border-gray-200 rounded-lg text-gray-700 bg-gray-50"
+              />
+              <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium">
+                Execute Query
+              </button>
+            </div>
+            <p className="text-gray-600 text-sm mb-4">Example Queries - Click to Try:</p>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {['Recent Credit Decisions', 'High-Risk Approvals', 'Declined Applications', 'Loan Purpose Distribution', 'Decision Performance', 'Customer Risk Distribution'].map((query) => (
+                <div key={query} className="bg-gray-50 hover:bg-indigo-50 border border-gray-200 hover:border-indigo-200 rounded-lg p-3 cursor-pointer transition-colors">
+                  <p className="font-medium text-gray-900 text-sm">{query}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Instant SQL Generation',
+      description: 'Your question becomes a database query automatically',
+      content: (
+        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+          <div className="p-6 border-b border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="font-bold text-gray-900">Query Results</h4>
+              <span className="text-sm text-gray-500">15 rows • 0ms</span>
+            </div>
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="text-center p-4 bg-gray-50 rounded-xl">
+                <div className="text-2xl font-bold text-indigo-600">15</div>
+                <div className="text-sm text-gray-500">Rows Returned</div>
+              </div>
+              <div className="text-center p-4 bg-gray-50 rounded-xl">
+                <div className="text-2xl font-bold text-indigo-600">0ms</div>
+                <div className="text-sm text-gray-500">Execution Time</div>
+              </div>
+              <div className="text-center p-4 bg-gray-50 rounded-xl">
+                <div className="text-2xl font-bold text-teal-600">Template Match</div>
+                <div className="text-sm text-gray-500">Query Method</div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-slate-800 p-4">
+            <p className="text-slate-400 text-xs mb-2">Generated SQL Query</p>
+            <code className="text-green-400 text-xs font-mono leading-relaxed block">
+              SELECT cd.customer_id, c.customer_type, cd.risk_score, cd.decision, cd.decision_timestamp 
+              FROM credit_decisions cd JOIN customers c ON cd.customer_id = c.customer_id 
+              WHERE cd.risk_score &gt;= 0.3 ORDER BY cd.risk_score DESC LIMIT 50
+            </code>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Board-Ready Results',
+      description: 'Data returned in seconds, ready for executive decisions',
+      content: (
+        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Customer Id</th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Customer Type</th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Risk Score</th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Decision</th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Decision Timestamp</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                <tr className="hover:bg-gray-50">
+                  <td className="px-4 py-3 text-sm text-gray-900">1</td>
+                  <td className="px-4 py-3 text-sm text-gray-600">individual</td>
+                  <td className="px-4 py-3 text-sm text-gray-900">0.664</td>
+                  <td className="px-4 py-3"><span className="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-medium">REFER</span></td>
+                  <td className="px-4 py-3 text-sm text-gray-500">11/7/2025, 7:09:08 AM</td>
+                </tr>
+                <tr className="hover:bg-gray-50">
+                  <td className="px-4 py-3 text-sm text-gray-900">950</td>
+                  <td className="px-4 py-3 text-sm text-gray-600">individual</td>
+                  <td className="px-4 py-3 text-sm text-gray-900">0.548</td>
+                  <td className="px-4 py-3"><span className="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-medium">REFER</span></td>
+                  <td className="px-4 py-3 text-sm text-gray-500">11/7/2025, 7:10:44 AM</td>
+                </tr>
+                <tr className="hover:bg-gray-50">
+                  <td className="px-4 py-3 text-sm text-gray-900">803</td>
+                  <td className="px-4 py-3 text-sm text-gray-600">individual</td>
+                  <td className="px-4 py-3 text-sm text-gray-900">0.44</td>
+                  <td className="px-4 py-3"><span className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-medium">DECLINE</span></td>
+                  <td className="px-4 py-3 text-sm text-gray-500">11/7/2025, 10:04:04 PM</td>
+                </tr>
+                <tr className="hover:bg-gray-50">
+                  <td className="px-4 py-3 text-sm text-gray-900">947</td>
+                  <td className="px-4 py-3 text-sm text-gray-600">individual</td>
+                  <td className="px-4 py-3 text-sm text-gray-900">0.395</td>
+                  <td className="px-4 py-3"><span className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-medium">DECLINE</span></td>
+                  <td className="px-4 py-3 text-sm text-gray-500">11/10/2025, 5:54:25 AM</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="bg-gray-50 px-4 py-3 border-t border-gray-200 text-center">
+            <p className="text-sm text-gray-500">Showing 4 of 15 results • Query completed in &lt;500ms</p>
+          </div>
+        </div>
+      )
+    }
+  ];
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+
+  return (
+    <section className={`relative z-10 px-6 py-16 bg-gradient-to-b from-white to-gray-50 transition-all duration-1000 delay-450 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+            See Credit AI in Action
+          </div>
+          <h2 className="text-3xl font-bold text-synapse-dark mb-4">{slides[currentSlide].title}</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            {slides[currentSlide].description}
+          </p>
+        </div>
+
+        {/* Slide Navigation */}
+        <div className="flex items-center justify-center gap-4 mb-8">
+          <button 
+            onClick={prevSlide}
+            className="p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-shadow border border-gray-200"
+          >
+            <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <div className="flex gap-2">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  idx === currentSlide 
+                    ? 'bg-indigo-600 w-8' 
+                    : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+              />
+            ))}
+          </div>
+          
+          <button 
+            onClick={nextSlide}
+            className="p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-shadow border border-gray-200"
+          >
+            <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Current Slide Content */}
+        <div className="transition-all duration-300">
+          {slides[currentSlide].content}
+        </div>
+
+        {/* Slide Counter */}
+        <div className="text-center mt-6 text-sm text-gray-500">
+          {currentSlide + 1} / {slides.length}
+        </div>
+
+        {/* CTA */}
+        <div className="text-center mt-8">
+          <a 
+            href="https://credit-ai-tigerdb.netlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+          >
+            Try Credit AI Now
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
   
@@ -419,6 +718,9 @@ export default function HomePage() {
 
       {/* Pitch Deck Section */}
       <PitchDeckSection mounted={mounted} />
+
+      {/* Credit AI Analytics Showcase Section */}
+      <CreditAIShowcaseSection mounted={mounted} />
 
       {/* Features Section */}
       <section className={`relative z-10 px-6 py-16 transition-all duration-1000 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
