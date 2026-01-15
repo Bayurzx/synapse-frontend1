@@ -519,8 +519,17 @@ export const synapseApi = {
 
   // Covenants
   covenants: {
-    list: async () => {
-      const response = await apiCall<PaginatedResponse<Covenant>>('/v1/synapse/covenants');
+    list: async (filters?: { borrowerId?: string }) => {
+      // Build query params
+      const params = new URLSearchParams();
+      if (filters?.borrowerId) {
+        params.append('borrower_id', filters.borrowerId);
+      } else {
+        // Fetch all covenants when no filter (for dashboard/monitoring overview)
+        params.append('page_size', '500');
+      }
+      const query = params.toString() ? `?${params.toString()}` : '';
+      const response = await apiCall<PaginatedResponse<Covenant>>(`/v1/synapse/covenants${query}`);
       return response.data;
     },
     get: async (id: string) => {

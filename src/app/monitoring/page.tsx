@@ -50,10 +50,12 @@ function MonitoringContent() {
     queryFn: synapseApi.covenants.getDashboard,
   });
 
-  // Fetch covenants list (for the grid)
+  // Fetch covenants list (for the grid) - use backend filter if borrowerId is set
   const { data: covenantsList = [], isLoading: covenantsLoading, refetch: refetchCovenants } = useQuery({
-    queryKey: ['covenants', 'list'],
-    queryFn: synapseApi.covenants.list,
+    queryKey: ['covenants', 'list', borrowerIdFilter],
+    queryFn: () => synapseApi.covenants.list(
+      borrowerIdFilter ? { borrowerId: borrowerIdFilter } : undefined
+    ),
   });
 
   // Fetch alerts
@@ -70,11 +72,8 @@ function MonitoringContent() {
     },
   });
 
-  // Filter covenants by borrower if filter is set
-  const allCovenants = covenantsList || [];
-  const covenants = borrowerNameFilter 
-    ? allCovenants.filter(c => c.borrower_name === borrowerNameFilter)
-    : allCovenants;
+  // Covenants are already filtered by backend when borrowerIdFilter is set
+  const covenants = covenantsList || [];
   
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dashboardData = (dashboard?.data || dashboard || {}) as any;

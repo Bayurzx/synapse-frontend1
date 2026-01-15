@@ -175,10 +175,10 @@ export default function DashboardPage() {
     refetchInterval: 60000,
   });
 
-  // Fetch covenants list (for the matrix)
+  // Fetch covenants list (for the matrix) - no filter, get all
   const { data: covenantsList, isLoading: covenantsListLoading, refetch: refetchCovenantsList } = useQuery({
     queryKey: ['covenants', 'list'],
-    queryFn: synapseApi.covenants.list,
+    queryFn: () => synapseApi.covenants.list(),
     refetchInterval: 60000,
   });
 
