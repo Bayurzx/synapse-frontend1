@@ -554,9 +554,31 @@ export const synapseApi = {
       };
       status: string;
     }>('/v1/synapse/covenants/dashboard'),
-    check: (facilityId?: string) => apiCall<Covenant[]>('/v1/synapse/covenants/check', {
+    check: (params?: {
+      covenant_id?: number;
+      facility_id?: number;
+      borrower_ids?: number[];
+      check_all?: boolean;
+      only_non_compliant?: boolean;
+      limit?: number;
+      random_sample?: boolean;
+      exclude_recent?: boolean;
+      dry_run?: boolean;
+    }) => apiCall<{
+      status: string;
+      data: {
+        checked_count: number;
+        results: Covenant[];
+        summary: {
+          compliant: number;
+          warning: number;
+          critical: number;
+          breach: number;
+        };
+      };
+    }>('/v1/synapse/covenants/check', {
       method: 'POST',
-      body: JSON.stringify({ facility_id: facilityId }),
+      body: JSON.stringify(params || {}),
     }),
   },
 
