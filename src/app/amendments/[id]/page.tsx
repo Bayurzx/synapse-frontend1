@@ -122,7 +122,7 @@ export default function AmendmentDetailPage({ params }: PageProps) {
     
     try {
       const response = await fetch(
-        `http://localhost:8000/v1/synapse/documents/${amendment.document_id}/download?format=pdf`
+        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/v1/synapse/documents/${amendment.document_id}/download?format=pdf`
       );
       
       if (!response.ok) {
